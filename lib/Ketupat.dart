@@ -1,0 +1,146 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'Layang.dart';
+import 'LuasC.dart';
+
+
+
+TextEditingController ctrd1 = TextEditingController();
+TextEditingController ctrd2 = TextEditingController();
+final LuasController control = Get.put(LuasController());
+
+void clearTextField() {
+  control.hasilLuasKetupat.value = 0;
+  ctrd1.clear();
+  ctrd2.clear();
+}
+
+ThemeData kalkulatorTheme = ThemeData(
+  primaryColor: Color(0xff008080),
+  backgroundColor: Color(0xfff8f1f1),
+);
+
+
+class Ketupat extends StatefulWidget {
+  const Ketupat({Key? key}) : super(key: key);
+
+  @override
+  State<Ketupat> createState() => _KetupatState();
+}
+
+class _KetupatState extends State<Ketupat> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Ketupat",
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Color(0xff0079ff),
+      ),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(height: 10,),
+              Image.asset("images/ketupatLogo.png",width: 300,height: 200,),
+              myTextField(ctrd1, "Diagonal1(d1)"),
+              myTextField(ctrd2, "Diagonal(d2)"),
+
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 180,
+                      child: ElevatedButton(
+                        onPressed: () => control.luasKetupat(
+                          double.parse(ctrd1.text.toString()),
+                          double.parse(ctrd2.text.toString()),
+                        ),
+                        child: Text("Hitung"),
+                      ),
+                    ),
+                    SizedBox(width: 10), // Add spacing between buttons
+                    Container(
+                      width: 180,
+                      child: ElevatedButton(
+                        onPressed: () => clearTextField(),
+                        child: Text("Reset"),
+                      ),
+                    ),
+                  ],
+                ),
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Stack(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(top: 50,left: 10),
+                          width: 180,
+                          height: 130,
+                          decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.all(Radius.circular(15))
+                          ),
+                          child: Obx(
+                                  ()=>Text('${control.hasilLuasKetupat.value}',style: TextStyle(fontSize: 20),)
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          width: 180,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color:Color(0xff5cd8ff),
+                              border: Border.all(),
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))
+                          ),
+                          child: Text("Hasil",style: TextStyle(fontSize: 20,color: Colors.white),),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Stack(
+                      children: [
+                        Container(
+                            width: 180,
+                            height: 130,
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.all(Radius.circular(15))
+                            ),
+                            child: Center(child: Text("Luas = 0.5 x d1 x d2",style: TextStyle(fontSize: 17),))
+
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          width: 180,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color:Color(0xff5cd8ff),
+                              border: Border.all(),
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))
+                          ),
+                          child: Text("Rumus",style: TextStyle(fontSize: 20,color: Colors.white),),
+                        )
+                      ],
+                    ),
+                  )
+
+                ],
+              ),
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
